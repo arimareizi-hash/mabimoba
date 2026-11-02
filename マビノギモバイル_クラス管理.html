@@ -1,10 +1,16 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>多芸多才 クラス管理</title>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>クラス管理</title>
 <style>
 :root{color-scheme:light;--bg:#eef5fc;--panel:#fff;--panel2:#f4f8fd;--line:#d5e5f5;--muted:#6b86a6;--text:#18365b;--blue:#347bd4;--purple:#8056cf;--green:#159b79;--red:#d83f68}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#edf5ff,#f8fbff 55%,#e9f4ff);color:var(--text);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}header{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;padding:16px clamp(14px,2.4vw,32px);border-bottom:1px solid #c8def3;background:linear-gradient(100deg,#e5f1ff,#fff 60%,#dceeff);position:relative;overflow:hidden}header:after{content:"";position:absolute;right:12%;top:-85px;width:330px;height:190px;border-radius:50%;background:radial-gradient(ellipse,#b7d8fb88,transparent 70%);pointer-events:none}.brand{display:flex;align-items:center;gap:13px;position:relative;z-index:1}.logo{font-size:36px;color:#246bb7;background:#fff;border:1px solid #c7def5;border-radius:14px;width:54px;height:54px;display:grid;place-items:center;box-shadow:0 4px 14px #244e7610}h1{font-size:clamp(21px,2.2vw,29px);margin:0;color:#153c69}.sub{margin:4px 0 0;color:#6a84a2;font-size:13px}.total{background:#fff;border:1px solid #c9dff5;border-radius:13px;padding:9px 13px;min-width:230px;position:relative;z-index:1;box-shadow:0 3px 12px #284e7010}.total label{font-size:12px;color:#59799e;display:block}.total input{margin-top:4px;width:120px;background:#f6faff;border:1px solid #c5dcf2;border-radius:8px;padding:6px 8px;color:#18365b;font-size:21px;font-weight:800}.total small{color:#7892b0;margin-left:6px}
+.goal-presets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-top:8px}
+.goal-preset{min-width:0;border:1px solid #315579;border-radius:8px;padding:7px 5px;background:#102d4c;color:#c7dcf2;font-size:11px;line-height:1.25;cursor:pointer;touch-action:manipulation}
+.goal-preset b{display:block;font-size:14px;color:#fff;margin-top:3px}
+.goal-preset.active{background:#1d5d91;border-color:#65a9e7;color:#fff;box-shadow:0 0 0 1px #65a9e744}
+.max-actions{justify-content:flex-end}
+.max-actions .btn{min-height:42px}
 .app-layout{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:calc(100vh - 86px)}.sidebar{background:linear-gradient(180deg,#173e6b,#102d50 80%);padding:16px 12px;color:#edf6ff;display:flex;flex-direction:column;gap:13px}.side-label{font-size:11px;font-weight:800;letter-spacing:.08em;color:#a8c9ee;padding:3px 8px 0}.side-heading{font-size:15px;font-weight:800;padding:2px 8px;color:#fff}.workspace{max-width:1700px;width:100%;margin:0 auto;padding:18px clamp(12px,1.8vw,26px) 32px;min-width:0}.character-bar{display:flex;flex-direction:column;align-items:stretch;gap:8px;background:transparent;border:0;padding:0;border-radius:0;margin:0}.character-tabs{display:flex;flex-direction:column;gap:7px;flex:1}.char-tab{display:flex;align-items:center;text-align:left;background:#ffffff12;border:1px solid #ffffff12;color:#e2efff;border-radius:11px;padding:11px 12px;cursor:pointer;font-weight:750;min-height:46px}.char-tab.active{background:linear-gradient(100deg,#3c8bec,#2868c2);border-color:#78b6ff;color:white;box-shadow:0 5px 15px #061b3b55}.char-tab.summary-active{background:linear-gradient(100deg,#3c8bec,#2868c2);border-color:#78b6ff;color:white}.sidebar .btn{width:100%;justify-content:center}.btn{border:0;border-radius:10px;padding:10px 13px;color:white;font-weight:750;cursor:pointer;background:linear-gradient(100deg,#3d8ce8,#2769c2);box-shadow:0 3px 8px #1b5a9d16}.btn.secondary{background:#fff;border:1px solid #d1e2f3;color:#355b82;box-shadow:none}.sidebar .btn.secondary{background:#ffffff10;border:1px solid #547aa4;color:#edf6ff}.btn.danger{color:#b52f50;border-color:#edc8d2}.sidebar .btn.danger{color:#ffd6df;border-color:#9a6179}.btn:disabled{opacity:.4;cursor:not-allowed}.summary,.max-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}.summary-card{background:#fff;border:1px solid #d9e8f7;border-radius:14px;padding:15px 16px;min-width:0;box-shadow:0 3px 12px #204e7610;position:relative;overflow:hidden}.summary-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#7db3ed}.summary-card:nth-child(1):before{background:#26b38c}.summary-card:nth-child(2):before{background:#e8a4bd}.summary-card:nth-child(3):before{background:#a9a0ed}.summary-card:nth-child(4):before{background:#75b7ed}.kicker{color:#58799e;font-size:12px;font-weight:750}.big{font-size:29px;font-weight:850;color:#159b79;margin-top:4px;overflow-wrap:anywhere}.formula{color:#6783a3;font-size:11px;margin-top:5px;overflow-wrap:anywhere}.stat{font-size:26px;font-weight:800;color:#244f7e;margin-top:5px}.hint{font-size:11px;color:#7c94ad;margin-top:4px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 2px 11px;padding-bottom:9px;border-bottom:1px solid #d8e7f5}.toolbar h2{font-size:17px;color:#204d7b;margin:0}.toolbar p{margin:0;color:#7892ad;font-size:12px}.class-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}.tile{min-width:0;background:#fff;border:1px solid #d7e7f7;border-radius:13px;padding:12px;transition:border-color .15s,box-shadow .15s;box-shadow:0 2px 8px #244c7010}.tile.registered{border-color:#9a83df;background:linear-gradient(145deg,#fff,#f6f2ff);box-shadow:0 0 0 1px #a18ae644,0 4px 13px #8060ca13}.tile-top{display:flex;align-items:center;gap:8px;min-height:42px;margin-bottom:10px}.emblem{width:43px;height:43px;flex:0 0 43px;border-radius:50%;border:1px solid #d1e1f2;display:grid;place-items:center;background:#f2f7fd;overflow:hidden}.emblem img{width:78%;height:78%;object-fit:contain;display:block}.tile.registered .emblem{border-color:#b8a8eb;background:#f4efff}.class-name{font-size:13px;font-weight:800;overflow-wrap:anywhere;color:#254f7c}.tile.registered .class-name{color:#6248a2}.badge{font-size:10px;background:#e9e2ff;color:#6245a9;border-radius:20px;padding:3px 6px;margin-left:auto;white-space:nowrap}.field-row{display:grid;grid-template-columns:60px minmax(0,1fr);align-items:center;gap:5px}.field-row label{font-size:12px;color:#6d87a4}.field-row input{width:100%;min-width:0;background:#f6faff;border:1px solid #d0e1f2;border-radius:8px;padding:8px 7px;color:#20466e;font-size:16px;font-weight:700}.field-row input:focus,.total input:focus{outline:2px solid #9cc8f6;border-color:#4b94e5}.status{font-size:11px;color:#8ba0b7;min-height:16px;margin-top:9px}.tile.registered .status{color:#7658b9;font-weight:750}.save-status{display:inline-flex;align-items:center;color:#188968;font-size:12px;padding:0 6px}.save-status.error{color:#d64563}.note{color:#7089a4;font-size:12px;margin:14px 2px 0;background:#f4f9ff;border:1px solid #d8e8f7;border-radius:10px;padding:11px 13px}.sheet{display:none}.sheet.active{display:block}.max-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}.max-tile{min-width:0;background:#fff;border:1px solid #d8e8f7;border-radius:13px;padding:13px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px #244c7010}.max-tile .emblem{width:45px;height:45px;flex:0 0 45px}.max-tile .max-class-name{font-weight:800;overflow-wrap:anywhere;color:#244f7d}.max-tile .max-level-value{font-size:22px;font-weight:850;color:#2c6cb3;margin-top:3px}.max-tile .max-winner{font-size:11px;color:#6b89a9;margin-top:4px;overflow-wrap:anywhere}.max-tile.has-level{border-color:#b3a3e7;background:linear-gradient(145deg,#fff,#f7f3ff)}.max-tile.has-level .emblem{border-color:#c0b1ef;box-shadow:0 0 0 3px #9b7de91a}.max-tile.has-level .max-winner{color:#6c54a8}.max-empty{color:#9aadc0;font-size:19px;font-weight:700}.actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:16px;padding:13px;background:#f5f9fe;border:1px solid #d9e7f5;border-radius:12px}.table-wrap{overflow:auto;border:1px solid #d7e7f7;border-radius:13px;background:#fff}table{width:100%;border-collapse:collapse;min-width:600px}th,td{text-align:left;padding:12px;border-bottom:1px solid #e3edf7}th{color:#4d7197;background:#f1f7fd;font-size:12px}td{color:#25496e}tr:last-child td{border-bottom:0}.max-level{font-size:18px;font-weight:800;color:#2c6cb3}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#e7f8f1;border:1px solid #8bd7bc;color:#17694f;padding:10px 16px;border-radius:10px;display:none;box-shadow:0 8px 30px #244c7020;z-index:10}
-@media(max-width:1250px){.class-grid,.max-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.summary,.max-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:850px){.app-layout{grid-template-columns:205px minmax(0,1fr)}.class-grid,.max-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.workspace{padding:14px 10px 24px}.sidebar{padding:12px 9px}}@media(max-width:620px){header{align-items:flex-start}.app-layout{display:block}.sidebar{padding:10px;gap:8px}.side-heading,.side-label{display:none}.character-bar{gap:7px}.character-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.char-tab{padding:8px 7px;min-height:40px;justify-content:center;font-size:12px}.sidebar .btn{width:auto;flex:1}.sidebar .btn.secondary{flex:1}.character-bar{display:flex;flex-direction:row;flex-wrap:wrap}.character-tabs{order:2;flex-basis:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.summary,.max-summary{grid-template-columns:1fr 1fr;gap:8px}.summary-card{padding:11px}.summary-card .big,.summary-card .stat{font-size:23px}.summary-card:first-child{grid-column:auto}.class-grid,.max-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.tile{padding:9px}.emblem{width:34px;height:34px;flex-basis:34px}.class-name{font-size:12px}.field-row{grid-template-columns:52px minmax(0,1fr)}.field-row input{font-size:15px;padding:7px 5px}.total{width:100%}.actions .btn{flex:1}.max-tile{padding:9px;gap:7px}.max-tile .emblem{width:34px;height:34px;flex-basis:34px}}
+@media(max-width:1250px){.class-grid,.max-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.summary,.max-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:850px){.app-layout{grid-template-columns:205px minmax(0,1fr)}.class-grid,.max-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.workspace{padding:14px 10px 24px}.sidebar{padding:12px 9px}}@media(max-width:620px){header{align-items:flex-start}.app-layout{display:block}.sidebar{padding:10px;gap:8px}.side-heading,.side-label{display:none}.character-bar{gap:7px}.character-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.char-tab{padding:8px 7px;min-height:40px;justify-content:center;font-size:12px}.sidebar .btn{width:auto;flex:1}.sidebar .btn.secondary{flex:1}.character-bar{display:flex;flex-direction:row;flex-wrap:wrap}.character-tabs{order:2;flex-basis:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.summary,.max-summary{grid-template-columns:1fr 1fr;gap:8px}.summary-card{padding:11px}.summary-card .big,.summary-card .stat{font-size:23px}.summary-card:first-child{grid-column:auto}.class-grid,.max-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.tile{padding:9px}.emblem{width:34px;height:34px;flex-basis:34px}.class-name{font-size:12px}.field-row{grid-template-columns:52px minmax(0,1fr)}.field-row input{font-size:15px;padding:7px 5px}.total{width:100%}.goal-presets{gap:4px;grid-column:1/-1}.goal-preset{font-size:10px;padding:7px 3px}.goal-preset b{font-size:13px}.actions .btn{flex:1}.max-tile{padding:9px;gap:7px}.max-tile .emblem{width:34px;height:34px;flex-basis:34px}}
 .metric-groups{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin:0;align-content:start}.content-split{display:grid;grid-template-columns:minmax(235px,.82fr) minmax(0,2.18fr);gap:16px;align-items:start}.metrics-rail{display:flex;flex-direction:column;gap:12px;min-width:0}.classes-panel{min-width:0}.classes-panel .toolbar{margin-top:0}.classes-panel .class-grid,.classes-panel .max-grid{grid-template-columns:repeat(6,minmax(0,1fr))}.metric-group{min-width:0}.group-title{display:flex;align-items:center;gap:9px;margin:0 0 8px 2px;color:#244f7d}.group-title strong{display:block;font-size:14px}.group-title small{display:block;font-size:11px;color:#7893ae}.group-icon{width:31px;height:31px;border-radius:10px;background:#e1f7ef;color:#149674;display:grid;place-items:center;font-size:18px;font-weight:800}.character-group .group-icon{background:#e5f0ff;color:#3679c5}.metric-group .summary,.metric-group .max-summary{grid-template-columns:minmax(0,1fr);margin:0;height:auto}.metric-group .summary-card{display:flex;flex-direction:column;justify-content:center}.metric-group .common-metrics .summary-card:first-child{background:linear-gradient(145deg,#fff,#f0fbf7)}.metric-group .common-metrics .summary-card:last-child{background:linear-gradient(145deg,#fff,#f1f7ff)}.metric-group .character-metrics .summary-card{background:linear-gradient(145deg,#fff,#f3f7ff)}.side-help{margin-top:auto;border:1px solid #42658a;background:#ffffff0b;color:#c3d8ef;border-radius:12px;padding:12px;font-size:12px;line-height:1.7}@media(max-width:1250px){.content-split{grid-template-columns:minmax(210px,.8fr) minmax(0,1.8fr)}.classes-panel .class-grid,.classes-panel .max-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:850px){.content-split{grid-template-columns:1fr}.metrics-rail{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.classes-panel .class-grid,.classes-panel .max-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:620px){.metric-groups{gap:10px}.group-title{margin-bottom:6px}.metrics-rail{grid-template-columns:1fr}.metric-group .summary,.metric-group .max-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.classes-panel .class-grid,.classes-panel .max-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.side-help{display:none}}
 
 /* Dark fantasy theme: design 3 */
@@ -79,18 +85,224 @@ h1{color:#f1f7ff}.sub{color:#a4c4e7}.total{background:#0b2746;border-color:#2b57
 .metric-group.character-group .group-title strong{color:#a9c8ff}
 .metric-group .summary-card .kicker{line-height:1.45}
 .classes-panel .status{letter-spacing:.01em}
+
+/* Smartphone/tablet responsive refinements (v8) */
+html{min-width:320px;-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth}
+body{overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom)}
+button,input{font:inherit}
+button,.btn,.char-tab{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.btn,.char-tab{min-height:44px}
+.field-row input,.total input{min-height:44px; font-size:16px}
+.workspace,.sidebar,.content-split,.classes-panel,.metrics-rail{min-width:0}
+img{max-width:100%}
+@media (max-width:850px){
+  header{padding:12px 16px;gap:12px}
+  .brand{gap:10px}
+  .logo{width:46px;height:46px;font-size:30px}
+  .app-layout{display:block;min-height:0}
+  .sidebar{position:relative;padding:10px 12px;gap:10px;border-right:0;border-bottom:1px solid #234c74}
+  .side-heading,.side-label{display:none}
+  .character-bar{display:flex;flex-direction:column;gap:8px}
+  .character-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+  .char-tab{justify-content:center;text-align:center;padding:9px 6px;overflow-wrap:anywhere}
+  .character-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+  .sidebar .btn{width:100%;padding:9px 7px;font-size:12px;white-space:normal}
+  .side-help{display:none}
+  .workspace{padding:14px 12px calc(24px + env(safe-area-inset-bottom))}
+  .content-split{grid-template-columns:minmax(0,1fr);gap:14px}
+  .metrics-rail{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .classes-panel .class-grid,.classes-panel .max-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .metric-group .summary,.metric-group .max-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .metric-group .summary-card{padding:11px}
+}
+@media (max-width:620px){
+  header{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;padding:12px}
+  h1{font-size:21px}
+  .sub{font-size:12px}
+  .total{min-width:0;width:100%;padding:9px 11px}
+  .total input{width:110px}
+  .sidebar{padding:9px 10px}
+  .character-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .character-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .workspace{padding:12px 10px 24px}
+  .metrics-rail{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metric-group .summary,.metric-group .max-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .summary-card{padding:10px}
+  .summary-card .big,.summary-card .stat{font-size:22px}
+  .formula{font-size:10px;line-height:1.45}
+  .classes-panel .class-grid,.classes-panel .max-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .tile,.max-tile{padding:9px}
+  .tile-top{gap:6px;min-height:36px}
+  .tile .emblem,.max-tile .emblem{width:34px;height:34px;flex-basis:34px}
+  .class-name{font-size:12px}
+  .badge{font-size:9px;padding:2px 5px}
+  .field-row{grid-template-columns:48px minmax(0,1fr);gap:4px}
+  .field-row label{font-size:11px}
+  .field-row input{padding:7px 6px}
+  .toolbar{align-items:flex-start;margin-top:12px}
+  .toolbar h2{font-size:16px}
+  .actions{padding:9px;gap:7px}
+  .actions .btn{flex:1 1 calc(50% - 7px);min-width:0}
+  .toast{width:calc(100% - 28px);text-align:center;bottom:calc(12px + env(safe-area-inset-bottom))}
+}
+@media (max-width:380px){
+  .character-actions{grid-template-columns:1fr 1fr}
+  .character-actions #addCharacter{grid-column:1/-1}
+  .char-tab{font-size:11px;padding-inline:4px}
+  .classes-panel .class-grid,.classes-panel .max-grid{grid-template-columns:minmax(0,1fr)}
+  .tile-top{min-height:40px}
+}
+/* Landscape phones: keep navigation compact and use the wider canvas */
+@media (orientation:landscape) and (max-height:600px) and (max-width:1100px){
+  header{display:flex;align-items:center;padding:8px 14px;gap:12px}
+  .brand{flex:1 1 55%;min-width:0}
+  .logo{width:40px;height:40px;font-size:26px}
+  h1{font-size:19px}
+  .sub{font-size:11px}
+  .total{width:auto;min-width:190px;padding:6px 9px}
+  .total input{min-height:38px;font-size:18px}
+  .app-layout{display:block;min-height:0}
+  .sidebar{padding:7px 10px;gap:7px}
+  .character-bar{display:grid;grid-template-columns:minmax(150px,1fr) minmax(0,3fr);align-items:center;gap:8px}
+  .character-bar #showMaxSheet{width:100%;font-size:12px}
+  .character-tabs{display:flex;flex-direction:row;flex-wrap:wrap;gap:6px}
+  .char-tab{min-height:38px;padding:6px 10px;font-size:12px}
+  .character-actions{display:flex;gap:6px}
+  .character-actions .btn{width:auto;min-height:38px;padding:6px 10px;font-size:11px}
+  .workspace{padding:10px 12px 18px}
+  .content-split{grid-template-columns:minmax(190px,.8fr) minmax(0,2fr);gap:12px}
+  .metrics-rail{display:flex;flex-direction:column}
+  .metric-group .summary,.metric-group .max-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .classes-panel .class-grid,.classes-panel .max-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+
+
+
+/* v9: 片手操作を優先したスマホUI */
+.level-control{display:grid;grid-template-columns:38px minmax(0,1fr) 38px;gap:5px;align-items:center;min-width:0}
+.level-step{height:42px;min-width:38px;border:1px solid #315a82;border-radius:10px;background:#102d4c;color:#eaf4ff;font-size:22px;font-weight:800;line-height:1;touch-action:manipulation}
+.level-step.plus{background:linear-gradient(135deg,#1689ed,#2459bd);border-color:#398bd3}
+.level-step:active{transform:scale(.96);filter:brightness(1.18)}
+.mobile-dock{display:none}
+@media(max-width:620px){
+ body{padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+ header{padding:10px 12px;gap:8px}
+ header .brand{gap:8px}
+ header .logo{width:38px;height:38px;font-size:25px;border-radius:11px}
+ header h1{font-size:17px}
+ header .sub{font-size:10px;line-height:1.3}
+ header .total{width:100%;min-width:0;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:4px 8px;padding:7px 9px}
+ header .total label{grid-column:1/-1;font-size:11px}
+ header .total input{width:100%;max-width:130px;min-height:38px;margin:0;font-size:18px}
+ header .total small{margin:0;font-size:10px}
+ .sidebar{padding:8px 10px 9px;gap:8px}
+ .character-bar{display:flex;flex-direction:column;gap:7px}
+ .character-bar #showMaxSheet{width:100%;min-height:42px;font-size:13px}
+ .character-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:7px;padding:1px 1px 5px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+ .char-tab{flex:0 0 auto;min-width:82px;min-height:42px;padding:8px 12px;font-size:12px}
+ .character-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:0;padding:8px 0 0}
+ .sidebar .character-actions .btn{min-height:42px;padding:6px 4px;font-size:11px;line-height:1.25}
+ .workspace{padding:9px 10px 16px}
+ .metric-groups{gap:8px}
+ .metric-group .group-title{margin-bottom:6px}
+ .metric-group .summary,.metric-group .max-summary{gap:7px}
+ .metric-group .summary-card{min-height:100px;padding:9px}
+ .metric-group .summary-card .kicker{min-height:30px;font-size:11px}
+ .metric-group .summary-card .big,.metric-group .summary-card .stat{min-height:28px;font-size:21px}
+ .metric-group .summary-card .hint{font-size:10px;line-height:1.3}
+ .toolbar{margin:10px 1px 8px;padding-bottom:7px}
+ .toolbar h2{font-size:15px}
+ .classes-panel .class-grid,.classes-panel .max-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .classes-panel .tile{min-height:130px;padding:8px}
+ .classes-panel .tile-top{min-height:34px;gap:6px;margin-bottom:8px}
+ .classes-panel .tile .emblem{width:30px;height:30px;flex-basis:30px}
+ .classes-panel .class-name{font-size:12px;min-height:30px}
+ .classes-panel .field-row{grid-template-columns:1fr;gap:4px}
+ .classes-panel .field-row label{font-size:10px}
+ .level-control{grid-template-columns:34px minmax(0,1fr) 34px;gap:4px}
+ .level-step{height:42px;min-width:34px;border-radius:9px;font-size:20px}
+ .classes-panel .field-row input{height:42px;min-height:42px;padding:5px 3px;text-align:center;font-size:17px;font-weight:800}
+ .classes-panel .status{font-size:10px;margin-top:6px;min-height:14px}
+ .classes-panel .max-tile{min-height:88px;padding:8px;gap:6px}
+ .classes-panel .max-tile .emblem{width:31px;height:31px;flex-basis:31px}
+ .classes-panel .max-tile .max-class-name{font-size:12px}
+ .classes-panel .max-tile .max-level-value{font-size:19px}
+ .classes-panel .max-tile .max-winner{font-size:10px;line-height:1.25}
+ .actions{gap:6px;padding:9px;margin-top:12px}
+ .actions .btn{min-height:42px;padding:8px 7px;font-size:11px}
+ .actions #saveStatus{flex-basis:100%;padding:0 2px}
+ .note{font-size:11px;padding:9px;margin-top:10px}
+ .mobile-dock{position:fixed;z-index:50;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:6px 12px calc(6px + env(safe-area-inset-bottom));background:rgba(5,22,41,.97);border-top:1px solid #315579;box-shadow:0 -5px 20px #0005;backdrop-filter:blur(12px)}
+ .mobile-dock button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:44px;padding:4px 6px;border:1px solid transparent;border-radius:10px;background:transparent;color:#a9c5e3;touch-action:manipulation}
+ .mobile-dock button span{font-size:18px;line-height:1.05}
+ .mobile-dock button small{font-size:9px;font-weight:700}
+ .mobile-dock button.selected{background:#164b7b;border-color:#327db9;color:#fff}
+ .toast{bottom:calc(76px + env(safe-area-inset-bottom));max-width:calc(100vw - 28px);width:max-content;text-align:center}
+}
+@media(max-width:370px){
+ .classes-panel .class-grid,.classes-panel .max-grid{grid-template-columns:1fr}
+ .classes-panel .tile{min-height:112px}
+ .classes-panel .field-row{grid-template-columns:48px minmax(0,1fr);align-items:center}
+ .classes-panel .field-row label{font-size:11px}
+}
+
+
+/* v11: goal controls stay in one row on desktop and mobile */
+header .total{width:min(100%,760px);min-width:0;padding:10px 12px;}
+header .total label{font-weight:800;font-size:12px;margin-bottom:6px;}
+.goal-control-row{display:grid;grid-template-columns:minmax(100px,.78fr) repeat(2,minmax(0,1fr));gap:7px;align-items:stretch;}
+.goal-control-row #requiredTotal{width:100%;min-width:0;min-height:44px;margin:0;padding:7px 9px;font-size:20px;text-align:center;}
+.goal-control-row .goal-presets{display:contents;}
+.goal-control-row .goal-preset{min-width:0;min-height:40px;padding:5px 4px;display:flex;flex-direction:column;justify-content:center;align-items:center;font-size:10px;white-space:normal;}
+.goal-control-row .goal-preset b{display:block;margin-top:1px;font-size:13px;}
+@media(min-width:621px){
+ header{align-items:center;}
+ header .total{flex:0 1 720px;}
+}
+@media(max-width:620px){
+ header .total{width:100%;padding:8px 9px;}
+ .goal-control-row{grid-template-columns:minmax(58px,.78fr) repeat(2,minmax(0,1fr));gap:5px;}
+ .goal-control-row #requiredTotal{min-height:44px;padding:6px 3px;font-size:18px;}
+ .goal-control-row .goal-preset{min-height:40px;padding:4px 3px;font-size:clamp(9px,2.7vw,10px);line-height:1.2;}
+ .goal-control-row .goal-preset b{font-size:clamp(11px,3.3vw,13px);}
+}
+@media(max-width:360px){
+ .goal-control-row{grid-template-columns:54px repeat(2,minmax(0,1fr));gap:4px;}
+ .goal-control-row .goal-preset{font-size:9px;min-height:38px;padding:3px 2px;}
+ .goal-control-row .goal-preset b{font-size:11px;}
+}
+
+/* v14: 目標レベル欄をコンパクト化してヘッダーの余白を削減 */
+header .total{width:fit-content;max-width:100%;flex:0 1 auto;padding:7px 9px;}
+header .total label{font-size:11px;margin:0 0 4px;line-height:1.2;}
+.goal-control-row{grid-template-columns:72px repeat(2,minmax(94px,108px));gap:5px;}
+.goal-control-row #requiredTotal{min-height:38px;padding:5px 6px;font-size:18px;}
+.goal-control-row .goal-preset{min-height:38px;padding:4px 3px;font-size:10px;}
+.goal-control-row .goal-preset b{font-size:12px;}
+@media(max-width:620px){
+ header .total{width:fit-content;max-width:100%;justify-self:start;padding:7px 8px;}
+ .goal-control-row{grid-template-columns:64px repeat(2,minmax(88px,100px));gap:4px;}
+ .goal-control-row #requiredTotal{min-height:36px;font-size:17px;}
+ .goal-control-row .goal-preset{min-height:36px;font-size:9px;}
+ .goal-control-row .goal-preset b{font-size:11px;}
+}
+@media(max-width:360px){
+ .goal-control-row{grid-template-columns:56px repeat(2,minmax(78px,1fr));gap:4px;}
+}
+
 </style></head><body>
-<header><div class="brand"><div class="logo">✧</div><div><h1>多芸多才 クラス管理</h1><p class="sub">キャラクターごとのクラスレベル管理・最大レベル集計</p></div></div><div class="total"><label for="requiredTotal">多芸多才 必要クラス累積レベル合計</label><input id="requiredTotal" type="number" min="0" step="1" value="675"><small>変更可能</small></div></header>
+<header><div class="brand"><div class="logo">✧</div><div><h1>クラス管理</h1><p class="sub">キャラクターごとのクラスレベル管理・最大レベル集計</p></div></div><div class="total"><label for="requiredTotal">必要累積レベル</label><div class="goal-control-row"><input id="requiredTotal" type="number" min="0" step="1" value="675" aria-label="必要クラス累積レベル合計"><div class="goal-presets" role="group" aria-label="必要累積レベルの目標"><button type="button" class="goal-preset active" data-total="675">多芸多才 <b>675</b></button><button type="button" class="goal-preset" data-total="975">万能の天才 <b>975</b></button></div></div></div></header>
 <div class="app-layout"><aside class="sidebar"><div class="side-heading">マイキャラクター</div><div class="character-bar"><div class="side-label">全キャラクター集計</div><button class="char-tab summary-active" id="showMaxSheet" type="button">▥　クラス別最高レベル</button><div class="side-label">キャラクター別</div><div class="character-tabs" id="characterTabs"></div></div><div class="character-actions"><button class="btn" id="addCharacter">＋ キャラクター追加</button><button class="btn secondary" id="renameCharacter">✎　名前を変更</button><button class="btn secondary danger" id="deleteCharacter">▱　キャラクター削除</button></div><div class="side-help">最大6キャラクターまで登録できます。登録したレベルから、クラス別の最高レベルを自動集計します。</div></aside><main class="workspace">
 <section class="sheet active" id="inputSheet">
 <div class="content-split"><aside class="metrics-rail"><div class="metric-groups"><section class="metric-group common-group"><div class="group-title"><span class="group-icon">◎</span><div><strong>全キャラクター共通</strong><small>全キャラクター共通</small></div></div><section class="summary common-metrics">
- <div class="summary-card"><div class="kicker" id="suggestedLabel">未登録クラスの平均目標レベル</div><div class="big" id="suggested">Lv. —</div><div class="formula" id="formula">(675 − レベル合計) ÷ 未レベル登録済みクラス数</div><div class="hint">未登録クラスごとの目標レベル（端数切り上げ）</div></div>
- <div class="summary-card"><div class="kicker">目標達成までの残りレベル</div><div class="stat" id="remaining">675</div><div class="hint">目標累積レベル − 全クラスの最高レベル合計</div></div>
+ <div class="summary-card"><div class="kicker" id="suggestedLabel">未登録クラスの平均目標レベル</div><div class="big" id="suggested">Lv. —</div><div class="formula" id="formula">(675 − レベル合計) ÷ 未レベル登録済みクラス数</div><div class="hint" id="suggestedHint">未登録クラスごとの目標レベル（端数切り上げ）</div></div>
+ <div class="summary-card"><div class="kicker" id="remainingLabel">目標達成までの残りレベル</div><div class="stat" id="remaining">675</div><div class="hint" id="remainingHint">目標累積レベル − 全クラスの最高レベル合計</div></div>
 </section></section><section class="metric-group character-group"><div class="group-title"><span class="group-icon">♙</span><div><strong id="characterMetricsTitle">キャラクター別管理</strong><small>選択中キャラクターの状況</small></div></div><section class="summary character-metrics">
  <div class="summary-card"><div class="kicker">レベル合計</div><div class="stat" id="sum">0</div><div class="hint">このキャラクターのレベル合計</div></div>
  <div class="summary-card"><div class="kicker">レベル登録済みクラス数</div><div class="stat" id="enteredCount">0 / 18</div><div class="hint">現在のレベルを登録したクラス</div></div>
 </section></section></div></aside><section class="classes-panel"><div class="toolbar"><h2 id="currentCharacterTitle">クラス一覧</h2></div><section class="class-grid" id="classGrid" aria-label="全クラス一覧"></section></section></div>
-<div class="actions"><span id="saveStatus" class="save-status" role="status" aria-live="polite">保存状態を確認中…</span><button class="btn secondary" id="copy">台帳をコピー</button><button class="btn secondary" id="export">バックアップを保存</button><button class="btn secondary" id="importBtn">バックアップを読み込む</button><input type="file" id="importFile" accept="application/json" hidden><button class="btn secondary danger" id="reset">このキャラの全レベルをクリア</button></div>
+<div class="actions"><span id="saveStatus" class="save-status" role="status" aria-live="polite">保存状態を確認中…</span><button class="btn secondary copy-ledger" id="copy">台帳をコピー</button><button class="btn secondary danger" id="reset">このキャラの全レベルをクリア</button></div>
 </section>
 <section class="sheet" id="maxSheet">
 <div class="content-split"><aside class="metrics-rail"><div class="metric-groups max-metric-groups"><section class="metric-group common-group"><div class="group-title"><span class="group-icon">◎</span><div><strong>全キャラクター共通</strong><small>全キャラクター共通</small></div></div><section class="max-summary common-metrics" aria-label="共通サマリー">
@@ -99,9 +311,14 @@ h1{color:#f1f7ff}.sub{color:#a4c4e7}.total{background:#0b2746;border-color:#2b57
 </section></section><section class="metric-group character-group"><div class="group-title"><span class="group-icon">♙</span><div><strong>全キャラクター集計</strong><small>クラスごとの最高レベルを集計</small></div></div><section class="max-summary character-metrics" aria-label="集計情報">
  <div class="summary-card"><div class="kicker">レベル合計</div><div class="stat" id="maxSum">0</div><div class="hint">全クラスの最高レベル合計</div></div>
  <div class="summary-card"><div class="kicker">レベル登録済みクラス数</div><div class="stat" id="maxEnteredCount">0 / 18</div><div class="hint">1体以上でレベル登録済みのクラス</div></div>
-</section></section></div></aside><section class="classes-panel"><div class="toolbar"><h2>クラス別最高レベル</h2><p>各クラスの最高レベルと登録キャラクターを表示します。</p></div><section class="max-grid" id="maxGrid" aria-label="クラス別最高レベル"></section></section></div></section>
-<p class="note">登録内容は同じブラウザに自動保存されます。ブラウザ内プレビューでは保存領域が変わる場合があるため、必要に応じてJSONバックアップを保存してください。</p>
+</section></section></div></aside><section class="classes-panel"><div class="toolbar"><h2>クラス別最高レベル</h2><p>各クラスの最高レベルと登録キャラクターを表示します。</p></div><section class="max-grid" id="maxGrid" aria-label="クラス別最高レベル"></section></section></div><div class="actions max-actions"><button class="btn secondary" id="copyAll">全キャラクターの台帳をコピー</button></div></section>
+<p class="note">登録内容は同じブラウザに自動保存されます。別の端末・ブラウザとはデータが共有されません。</p>
 </main></div><div class="toast" id="toast"></div>
+<nav class="mobile-dock" id="mobileDock" aria-label="スマホ用メニュー">
+  <button type="button" data-action="characters"><span>♙</span><small>キャラ</small></button>
+  <button type="button" data-action="input" class="selected"><span>✎</span><small>クラス入力</small></button>
+  <button type="button" data-action="summary"><span>◎</span><small>全体集計</small></button>
+</nav>
 <script>
 const classes=[
  {name:"戦士",icon:"data:image/png;base64,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"},
@@ -133,7 +350,7 @@ function valid(v){return v!==undefined&&v!==null&&v!==''&&Number.isFinite(Number
 function setSaveStatus(message,error=false){$('saveStatus').textContent=(error?'⚠ ':'● ')+message;$('saveStatus').classList.toggle('error',error)}
 function active(){return characters.find(c=>c.id===activeId)||characters[0]}
 function cleanLevels(source){const out={};if(!source||typeof source!=='object'||Array.isArray(source))return out;classes.forEach(c=>{if(valid(source[c.name]))out[c.name]=String(source[c.name])});return out}
-function save(){if(!storageAvailable){setSaveStatus('保存領域が利用できません。入力はこの画面内のみです',true);return false}try{const now=new Date().toISOString();localStorage.setItem(STORAGE_KEY,JSON.stringify({version:1,requiredTotal,characters,activeId,savedAt:now}));lastSavedAt=now;setSaveStatus('自動保存済み · '+new Date(now).toLocaleTimeString());return true}catch(e){setSaveStatus('保存失敗。JSONバックアップを保存してください',true);return false}}
+function save(){if(!storageAvailable){setSaveStatus('保存領域が利用できません。入力はこの画面内のみです',true);return false}try{const now=new Date().toISOString();localStorage.setItem(STORAGE_KEY,JSON.stringify({version:1,requiredTotal,characters,activeId,savedAt:now}));lastSavedAt=now;setSaveStatus('自動保存済み · '+new Date(now).toLocaleTimeString());return true}catch(e){setSaveStatus('保存に失敗しました。ブラウザの保存領域を確認してください',true);return false}}
 function load(){try{const test='mabinogi-multi-test';localStorage.setItem(test,'1');localStorage.removeItem(test);let raw=localStorage.getItem(STORAGE_KEY);if(raw){const d=JSON.parse(raw);if(!d||!Array.isArray(d.characters))throw Error('invalid');characters=d.characters.slice(0,6).map(c=>({id:String(c.id||id()),name:String(c.name||'キャラクター').slice(0,30),levels:cleanLevels(c.levels)}));requiredTotal=valid(d.requiredTotal)?Number(d.requiredTotal):675;activeId=characters.some(c=>c.id===d.activeId)?d.activeId:(characters[0]?.id||null);lastSavedAt=d.savedAt||null;if(!characters.length)throw Error('empty');setSaveStatus('復元済み：'+characters.length+'体'+(lastSavedAt?' · '+new Date(lastSavedAt).toLocaleString():''));return}
 // Migrate a prior single-character level record without deleting its source.
 for(const key of LEGACY_KEYS){const text=localStorage.getItem(key);if(!text)continue;const d=JSON.parse(text);const source=d&&d.levels&&typeof d.levels==='object'?d.levels:d;const c={id:id(),name:'メイン',levels:cleanLevels(source)};characters=[c];activeId=c.id;if(d&&valid(d.requiredTotal))requiredTotal=Number(d.requiredTotal);save();setSaveStatus('旧データをメインに移行しました（'+Object.keys(c.levels).length+'クラス）');return}
@@ -142,8 +359,35 @@ characters=[{id:id(),name:'メイン',levels:{}}];activeId=characters[0].id;save
 function stats(c){const entered=classes.filter(x=>valid(c.levels[x.name]));const sum=entered.reduce((n,x)=>n+Number(c.levels[x.name]),0);const missing=classes.length-entered.length;const remain=requiredTotal-sum;const goal=missing>0&&remain>=0?Math.ceil(remain/missing):null;return {entered,sum,missing,remain,goal}}
 function maxLevel(c){const vals=classes.filter(x=>valid(c.levels[x.name])).map(x=>({name:x.name,level:Number(c.levels[x.name])})).sort((a,b)=>b.level-a.level);return vals[0]||null}
 function renderCharacters(){const root=$('characterTabs');root.innerHTML='';characters.forEach(c=>{const b=document.createElement('button');b.className='char-tab'+(c.id===activeId&&$('inputSheet').classList.contains('active')?' active':'');b.textContent=c.name;b.addEventListener('click',()=>{activeId=c.id;showSheet('inputSheet');save();renderAll()});root.appendChild(b)});$('addCharacter').disabled=characters.length>=6;$('addCharacter').style.opacity=characters.length>=6?'.45':'1';$('addCharacter').title=characters.length>=6?'最大6体までです':'';$('deleteCharacter').disabled=characters.length<=1;$('deleteCharacter').style.opacity=characters.length<=1?'.45':'1'}
-function renderGrid(){const c=active();if(!c)return;const root=$('classGrid');root.innerHTML='';$('currentCharacterTitle').textContent=c.name+'：クラス一覧';if($('characterMetricsTitle'))$('characterMetricsTitle').textContent=c.name+' の情報';classes.forEach((cl,i)=>{const lv=c.levels[cl.name]??'';const card=document.createElement('article');card.className='tile'+(valid(lv)?' registered':'');card.dataset.name=cl.name;card.innerHTML=`<div class="tile-top"><div class="emblem"><img src="${cl.icon}" alt=""></div><div class="class-name">${cl.name}</div>${valid(lv)?'<span class="badge">登録済み</span>':''}</div><div class="field-row"><label for="lv-${i}">現在Lv.</label><input id="lv-${i}" type="number" min="0" step="1" data-name="${cl.name}" value="${esc(lv)}" placeholder="未登録"></div><div class="status">${valid(lv)?'✓ レベル登録済み':'未登録'}</div>`;root.appendChild(card)});root.querySelectorAll('input[data-name]').forEach(inp=>inp.addEventListener('input',e=>{const v=e.target.value,n=e.target.dataset.name;if(v==='')delete c.levels[n];else c.levels[n]=v;updateSummary();updateMaxTable();save();const card=e.target.closest('.tile');card.classList.toggle('registered',valid(v));const status=card.querySelector('.status');status.textContent=valid(v)?'✓ レベル登録済み':'未登録';let badge=card.querySelector('.badge');if(valid(v)&&!badge){badge=document.createElement('span');badge.className='badge';badge.textContent='登録済み';card.querySelector('.tile-top').appendChild(badge)}else if(!valid(v)&&badge)badge.remove()}));updateSummary()}
-function updateSummary(){const c=active();if(!c)return;const s=stats(c);$('sum').textContent=s.sum;$('enteredCount').textContent=s.entered.length+' / '+classes.length;const commonSum=classes.reduce((total,cl)=>{const vals=characters.map(ch=>ch.levels[cl.name]).filter(valid).map(Number);return total+(vals.length?Math.max(...vals):0)},0);const commonEntered=classes.filter(cl=>characters.some(ch=>valid(ch.levels[cl.name]))).length;const commonMissing=classes.length-commonEntered;const commonRemain=requiredTotal-commonSum;const commonGoal=commonMissing>0&&commonRemain>=0?Math.ceil(commonRemain/commonMissing):null;$('remaining').textContent=commonRemain;$('suggestedLabel').textContent=commonMissing===0?'目標達成までの残りレベル':'未登録クラスの平均目標レベル';$('suggested').textContent=commonMissing===0?String(commonRemain):(commonGoal===null?'—':'Lv. '+commonGoal);$('formula').textContent=commonMissing===0?`${requiredTotal} − クラス別最高レベル合計 ${commonSum} = ${commonRemain}`:commonRemain<0?`クラス別最高レベル合計 ${commonSum} が必要合計 ${requiredTotal} を超えています。`:`(${requiredTotal} − クラス別最高レベル合計 ${commonSum}) ÷ 未レベル登録済みクラス数 ${commonMissing} = ${(commonRemain/commonMissing).toFixed(2)} → Lv. ${commonGoal}（端数切り上げ）`;}
+function renderGrid(){const c=active();if(!c)return;const root=$('classGrid');root.innerHTML='';$('currentCharacterTitle').textContent=c.name+'：クラス一覧';if($('characterMetricsTitle'))$('characterMetricsTitle').textContent=c.name+' の情報';classes.forEach((cl,i)=>{const lv=c.levels[cl.name]??'';const card=document.createElement('article');card.className='tile'+(valid(lv)?' registered':'');card.dataset.name=cl.name;card.innerHTML=`<div class="tile-top"><div class="emblem"><img src="${cl.icon}" alt=""></div><div class="class-name">${cl.name}</div>${valid(lv)?'<span class="badge">登録済み</span>':''}</div><div class="field-row"><label for="lv-${i}">現在Lv.</label><div class="level-control"><button type="button" class="level-step" data-step="-1" aria-label="${cl.name}のレベルを1下げる">−</button><input id="lv-${i}" type="number" inputmode="numeric" pattern="[0-9]*" min="0" step="1" data-name="${cl.name}" value="${esc(lv)}" placeholder="未登録"><button type="button" class="level-step plus" data-step="1" aria-label="${cl.name}のレベルを1上げる">＋</button></div></div><div class="status">${valid(lv)?'✓ レベル登録済み':'未登録'}</div>`;root.appendChild(card)});root.querySelectorAll('input[data-name]').forEach(inp=>inp.addEventListener('input',e=>{const v=e.target.value,n=e.target.dataset.name;if(v==='')delete c.levels[n];else c.levels[n]=v;updateSummary();updateMaxTable();save();const card=e.target.closest('.tile');card.classList.toggle('registered',valid(v));const status=card.querySelector('.status');status.textContent=valid(v)?'✓ レベル登録済み':'未登録';let badge=card.querySelector('.badge');if(valid(v)&&!badge){badge=document.createElement('span');badge.className='badge';badge.textContent='登録済み';card.querySelector('.tile-top').appendChild(badge)}else if(!valid(v)&&badge)badge.remove()}));root.querySelectorAll('.level-step').forEach(btn=>btn.addEventListener('click',()=>{const input=btn.parentElement.querySelector('input');const current=input.value===''?0:Number(input.value);input.value=String(Math.max(0,current+Number(btn.dataset.step)));input.dispatchEvent(new Event('input',{bubbles:true}));}));updateSummary()}
+function updateSummary(){
+ const c=active();if(!c)return;
+ const s=stats(c);$('sum').textContent=s.sum;$('enteredCount').textContent=s.entered.length+' / '+classes.length;
+ const commonSum=classes.reduce((total,cl)=>{const vals=characters.map(ch=>ch.levels[cl.name]).filter(valid).map(Number);return total+(vals.length?Math.max(...vals):0)},0);
+ const commonEntered=classes.filter(cl=>characters.some(ch=>valid(ch.levels[cl.name]))).length;
+ const commonMissing=classes.length-commonEntered;
+ const commonRemain=requiredTotal-commonSum;
+ const commonGoal=commonMissing>0&&commonRemain>=0?Math.ceil(commonRemain/commonMissing):null;
+ if(commonMissing===0){
+  const average=commonEntered>0?requiredTotal/commonEntered:0;
+  const averageText=Number.isInteger(average)?String(average):average.toFixed(1);
+  $('suggestedLabel').textContent='目標平均レベル';
+  $('suggested').textContent='Lv. '+averageText;
+  $('formula').textContent=`必要クラス累積レベル合計 ${requiredTotal} ÷ 登録クラス数 ${commonEntered} = ${averageText}`;
+  $('suggestedHint').textContent='全クラス登録済みの場合の目標平均レベル';
+  $('remainingLabel').textContent='目標達成までの残りレベル';
+  $('remaining').textContent=commonRemain;
+  $('remainingHint').textContent='目標累積レベル − 全クラスの最高レベル合計';
+ }else{
+  $('suggestedLabel').textContent='未登録クラスの平均目標レベル';
+  $('suggested').textContent=commonGoal===null?'—':'Lv. '+commonGoal;
+  $('formula').textContent=commonRemain<0?`クラス別最高レベル合計 ${commonSum} が必要合計 ${requiredTotal} を超えています。`:`(${requiredTotal} − クラス別最高レベル合計 ${commonSum}) ÷ 未登録クラス数 ${commonMissing} = ${(commonRemain/commonMissing).toFixed(2)} → Lv. ${commonGoal}（端数切り上げ）`;
+  $('suggestedHint').textContent='未登録クラスごとの目標レベル（端数切り上げ）';
+  $('remainingLabel').textContent='目標達成までの残りレベル';
+  $('remaining').textContent=commonRemain;
+  $('remainingHint').textContent='目標累積レベル − 全クラスの最高レベル合計';
+ }
+}
 function updateMaxTable(){
  const root=$('maxGrid');if(!root)return;root.innerHTML='';
  let maxSum=0,enteredClasses=0;
@@ -160,22 +404,70 @@ function updateMaxTable(){
  const missing=classes.length-enteredClasses, remain=requiredTotal-maxSum;
  const goal=missing>0&&remain>=0?Math.ceil(remain/missing):null;
  $('maxSum').textContent=maxSum;$('maxEnteredCount').textContent=enteredClasses+' / '+classes.length;$('maxRemaining').textContent=remain;
- $('maxSuggestedLabel').textContent=missing===0?'目標達成までの残りレベル':'未登録クラスの平均目標レベル';
- $('maxSuggested').textContent=missing===0?String(remain):(goal===null?'—':'Lv. '+goal);
- $('maxFormula').textContent=missing===0?`${requiredTotal} − 最高レベル合計 ${maxSum} = ${remain}`:remain<0?`最高レベル合計 ${maxSum} が必要合計 ${requiredTotal} を超えています。`:`(${requiredTotal} − ${maxSum}) ÷ ${missing} = ${(remain/missing).toFixed(2)} → Lv. ${goal}（端数切り上げ）`;
+ if(missing===0){
+  const average=enteredClasses>0?requiredTotal/enteredClasses:0;
+  const averageText=Number.isInteger(average)?String(average):average.toFixed(1);
+  $('maxSuggestedLabel').textContent='目標平均レベル';
+  $('maxSuggested').textContent='Lv. '+averageText;
+  $('maxFormula').textContent=`必要クラス累積レベル合計 ${requiredTotal} ÷ 登録クラス数 ${enteredClasses} = ${averageText}`;
+ }else{
+  $('maxSuggestedLabel').textContent='未登録クラスの平均目標レベル';
+  $('maxSuggested').textContent=goal===null?'—':'Lv. '+goal;
+  $('maxFormula').textContent=remain<0?`最高レベル合計 ${maxSum} が必要合計 ${requiredTotal} を超えています。`:`(${requiredTotal} − ${maxSum}) ÷ ${missing} = ${(remain/missing).toFixed(2)} → Lv. ${goal}（端数切り上げ）`;
+ }
 }
 function showSheet(sheetId){$('inputSheet').classList.toggle('active',sheetId==='inputSheet');$('maxSheet').classList.toggle('active',sheetId==='maxSheet');$('showMaxSheet').classList.toggle('summary-active',sheetId==='maxSheet');renderCharacters();if(sheetId==='maxSheet')updateMaxTable()}
-function renderAll(){renderCharacters();renderGrid();updateMaxTable();$('requiredTotal').value=requiredTotal}
+function renderAll(){renderCharacters();renderGrid();updateMaxTable();$('requiredTotal').value=requiredTotal;syncGoalPresets()}
 function esc(s){return String(s).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
 function toast(s){const t=$('toast');t.textContent=s;t.style.display='block';setTimeout(()=>t.style.display='none',2200)}
 $('addCharacter').addEventListener('click',()=>{if(characters.length>=6){toast('キャラクターは最大6体までです');return}const name=prompt('キャラクター名を入力してください',`キャラクター${characters.length+1}`);if(name===null)return;const trimmed=name.trim();if(!trimmed){toast('名前を入力してください');return}const c={id:id(),name:trimmed.slice(0,30),levels:{}};characters.push(c);activeId=c.id;save();renderAll()});
 $('renameCharacter').addEventListener('click',()=>{const c=active();if(!c)return;const name=prompt('新しいキャラクター名を入力してください',c.name);if(name===null)return;const trimmed=name.trim();if(!trimmed){toast('名前を入力してください');return}c.name=trimmed.slice(0,30);save();renderAll()});
 $('deleteCharacter').addEventListener('click',()=>{if(characters.length<=1){toast('最後の1体は削除できません');return}const c=active();if(!c||!confirm(`「${c.name}」とそのレベルデータを削除しますか？`))return;characters=characters.filter(x=>x.id!==c.id);activeId=characters[0].id;save();renderAll();toast('キャラクターを削除しました')});
 $('requiredTotal').addEventListener('input',e=>{if(e.target.value===''||!valid(e.target.value))return;requiredTotal=Number(e.target.value);updateSummary();updateMaxTable();save()});
+function syncGoalPresets(){document.querySelectorAll('.goal-preset').forEach(b=>b.classList.toggle('active',Number(b.dataset.total)===requiredTotal))}
+document.querySelectorAll('.goal-preset').forEach(b=>b.addEventListener('click',()=>{requiredTotal=Number(b.dataset.total);$('requiredTotal').value=requiredTotal;syncGoalPresets();updateSummary();updateMaxTable();save();toast(`${b.textContent.trim()}に設定しました`)}));
+$('requiredTotal').addEventListener('change',syncGoalPresets);
 $('showMaxSheet').addEventListener('click',()=>showSheet('maxSheet'));
-$('copy').addEventListener('click',async()=>{const c=active(),s=stats(c);const lines=[`多芸多才 クラス管理：${c.name}`,`必要累積レベル合計: ${requiredTotal}`,`レベル合計: ${s.sum}`,`レベル登録済みクラス数: ${s.entered.length}`,`目標達成までの残りレベル: ${s.remain}`,...classes.map(cl=>`${cl.name}: ${valid(c.levels[cl.name])?'Lv.'+c.levels[cl.name]:'未登録'}`)];try{await navigator.clipboard.writeText(lines.join('\n'));toast('台帳をコピーしました')}catch(e){const ta=document.createElement('textarea');ta.value=lines.join('\n');document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('台帳をコピーしました')}});
-$('export').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({version:1,requiredTotal,characters,activeId,savedAt:new Date().toISOString()},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mabinogi-class-level-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('バックアップを保存しました')});
-$('importBtn').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!Array.isArray(d.characters))throw Error('format');const incoming=d.characters.slice(0,6).map(c=>({id:String(c.id||id()),name:String(c.name||'キャラクター').slice(0,30),levels:cleanLevels(c.levels)}));if(!incoming.length)throw Error('empty');if(!confirm('現在の台帳をバックアップの内容で置き換えますか？'))return;characters=incoming;activeId=incoming.some(c=>c.id===d.activeId)?d.activeId:incoming[0].id;if(valid(d.requiredTotal))requiredTotal=Number(d.requiredTotal);storageAvailable=true;const ok=save();renderAll();toast(ok?'バックアップを復元しました':'復元しましたが自動保存に失敗しました')}catch(err){toast('バックアップの形式が正しくありません')}finally{e.target.value=''}});
+function copyText(text){
+ const fallback=()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('台帳をコピーしました')};
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>toast('台帳をコピーしました')).catch(fallback)}else fallback();
+}
+$('copy').addEventListener('click',()=>{
+ const c=active(),s=stats(c);
+ const lines=[`クラス管理：${c.name}`,`必要クラス累積レベル合計: ${requiredTotal}`,`レベル合計: ${s.sum}`,`レベル登録済みクラス数: ${s.entered.length}`,`目標達成までの残りレベル: ${s.remain}`,...classes.map(cl=>`${cl.name}: ${valid(c.levels[cl.name])?'Lv.'+c.levels[cl.name]:'未登録'}`)];
+ copyText(lines.join('\n'));
+});
+$('copyAll').addEventListener('click',()=>{
+ const lines=[`クラス管理：全キャラクター集計`,`必要クラス累積レベル合計: ${requiredTotal}`,`登録キャラクター数: ${characters.length}`,''];
+ characters.forEach((c,index)=>{
+  const st=stats(c);
+  lines.push(`【${c.name}】`,`レベル合計: ${st.sum}`,`レベル登録済みクラス数: ${st.entered.length}`,`目標達成までの残りレベル: ${st.remain}`,...classes.map(cl=>`${cl.name}: ${valid(c.levels[cl.name])?'Lv.'+c.levels[cl.name]:'未登録'}`),'');
+ });
+ lines.push('【クラス別最高レベル】');
+ classes.forEach(cl=>{
+  const vals=characters.map(c=>({name:c.name,level:valid(c.levels[cl.name])?Number(c.levels[cl.name]):null})).filter(x=>x.level!==null);
+  const max=vals.length?Math.max(...vals.map(x=>x.level)):null;
+  const owners=max===null?[]:vals.filter(x=>x.level===max).map(x=>x.name);
+  lines.push(`${cl.name}: ${max===null?'未登録':'Lv.'+max+'（'+owners.join('、')+'）'}`);
+ });
+ copyText(lines.join('\n'));
+});
 $('reset').addEventListener('click',()=>{const c=active();if(!c||!confirm(`「${c.name}」の全クラスレベルをクリアしますか？`))return;c.levels={};save();renderAll();toast('このキャラクターのレベルをクリアしました')});
+// スマホ用の固定メニュー：既存画面・機能をそのまま呼び出す
+$('mobileDock').querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>{
+ const action=btn.dataset.action;
+ $('mobileDock').querySelectorAll('button').forEach(x=>x.classList.toggle('selected',x===btn));
+ if(action==='characters'){
+   showSheet('inputSheet');
+   document.querySelector('.sidebar').scrollIntoView({behavior:'smooth',block:'start'});
+ }else if(action==='input'){
+   showSheet('inputSheet');
+   $('classGrid').scrollIntoView({behavior:'smooth',block:'start'});
+ }else if(action==='summary'){
+   showSheet('maxSheet');
+   window.scrollTo({top:0,behavior:'smooth'});
+ }
+}));
+$('showMaxSheet').addEventListener('click',()=>{const b=$('mobileDock').querySelector('[data-action="summary"]');if(b){$('mobileDock').querySelectorAll('button').forEach(x=>x.classList.toggle('selected',x===b))}});
 load();renderAll();
 </script></body></html>
